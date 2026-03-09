@@ -4,31 +4,782 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="facebook-domain-verification" content="vqz57akgkbk3kjs0x1wdsbp11gpf7g" />
+    <meta name="description" content="Odd Duck Labs — an app studio crafting delightful experiences. Makers of Momentos, available on Web, iOS, and Android.">
     <title>Odd Duck Labs</title>
     <link rel="icon" type="image/png" href="images/favicon.png">
     <style>
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-bold-webfont.woff') format('woff');
+            font-weight: 700 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --yellow: #FFC928;
+            --yellow-light: #FFF3D0;
+            --red: #E84545;
+            --blue: #3B82F6;
+            --blue-light: #EFF6FF;
+            --green: #22C55E;
+            --green-light: #F0FDF4;
+            --orange: #FF9F1C;
+            --orange-light: #FFF4E5;
+            --dark: #1A1A2E;
+            --gray: #6B7280;
+            --gray-light: #F9FAFB;
+            --radius: 24px;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        html {
+            scroll-behavior: smooth;
         }
 
-        .logo {
-            max-width: min(80vw, 500px);
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--dark);
+            background: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ---- NAV ---- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 0 24px;
+            background: rgba(255, 255, 255, 0);
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            transition: background 0.4s, backdrop-filter 0.4s, -webkit-backdrop-filter 0.4s, box-shadow 0.4s;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            height: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--blue);
+            transition: width 0.3s, left 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--dark);
+            margin: 6px 0;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        /* ---- HERO ---- */
+        .hero {
+            padding: 160px 24px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .hero-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .hero-image {
+            flex-shrink: 0;
+        }
+
+        .hero-mascot {
+            width: 380px;
             height: auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 6vw, 4rem);
+            font-weight: 700;
+            line-height: 1.15;
+            max-width: 700px;
+            margin: 0 0 24px;
+        }
+
+        .hero h1 .c-yellow { color: var(--yellow); }
+        .hero h1 .c-orange { color: var(--orange); }
+        .hero h1 .c-red { color: var(--red); }
+        .hero h1 .c-blue { color: var(--blue); }
+        .hero h1 .c-green { color: var(--green); }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 520px;
+            margin: 0 0 48px;
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            color: var(--dark);
+            text-decoration: none;
+            padding: 14px;
+            font-weight: 800;
+            font-size: 1rem;
+            transition: opacity 0.2s, transform 0.2s;
+            text-align: center;
+            margin: 48px auto 0;
+        }
+
+        .hero-cta:hover {
+            opacity: 0.7;
+        }
+
+        .hero-cta svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(3px);
+        }
+
+        /* ---- SECTION COMMON ---- */
+        section {
+            padding: 100px 24px;
+        }
+
+        .section-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--blue);
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 560px;
+            font-weight: 500;
+        }
+
+        /* ---- APP SHOWCASE ---- */
+        #apps {
+            background: var(--gray-light);
+        }
+
+        .app-card {
+            margin-top: 48px;
+            background: #fff;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.06);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .app-card-visual {
+            aspect-ratio: 3 / 2;
+            overflow: hidden;
+        }
+
+        .app-card-visual img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+
+        .app-card:hover .app-card-visual img {
+            transform: scale(1.05);
+        }
+
+        .app-card-content {
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .app-card-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .app-card-content p {
+            color: var(--gray);
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .app-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            transition: gap 0.2s, opacity 0.2s;
+        }
+
+        .app-card:hover .app-link {
+            gap: 14px;
+            opacity: 0.8;
+        }
+
+        .app-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* ---- ABOUT ---- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .about-grid > * {
+            grid-column: span 2;
+        }
+
+        .about-card {
+            padding: 36px;
+            border-radius: 20px;
+            border: 3px solid var(--dark);
+            color: var(--dark);
+            box-shadow: 6px 6px 0 var(--dark);
+        }
+
+        .about-card:nth-child(1) {
+            background: var(--yellow);
+        }
+
+        .about-card:nth-child(2) {
+            background: var(--orange);
+        }
+
+        .about-card:nth-child(3) {
+            background: var(--red);
+            color: #fff;
+        }
+
+        .about-card:nth-child(4) {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .about-card:nth-child(5) {
+            background: var(--green);
+            color: #fff;
+        }
+
+        .about-card:nth-child(6) {
+            background: #fff;
+            color: var(--dark);
+        }
+
+        .about-card-cta {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        .about-card-cta:hover .about-card-link {
+            gap: 14px;
+            opacity: 0.8;
+        }
+
+        .about-card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .about-card-icon svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .icon-yellow,
+        .icon-blue,
+        .icon-green {
+            background: #fff;
+            color: var(--dark);
+            border: 2px solid var(--dark);
+        }
+
+        .about-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .about-card p {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .about-card:nth-child(1) p,
+        .about-card:nth-child(2) p,
+        .about-card:nth-child(6) p {
+            color: var(--dark);
+            opacity: 0.7;
+        }
+
+        .about-card:nth-child(3) p,
+        .about-card:nth-child(4) p,
+        .about-card:nth-child(5) p {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .about-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--blue);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-top: 4px;
+            transition: gap 0.2s, opacity 0.2s;
+        }
+
+        .about-card-link:hover {
+            gap: 14px;
+            opacity: 0.8;
+        }
+
+        .about-card-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ---- FOOTER ---- */
+        footer {
+            background: #000;
+            color: #fff;
+            padding: 60px 24px;
+        }
+
+        .footer-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            height: 36px;
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--yellow);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                padding: 24px;
+                gap: 20px;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            }
+
+            .hero {
+                padding: 140px 24px 60px;
+                text-align: center;
+            }
+
+            .hero-inner {
+                flex-direction: column-reverse;
+                gap: 40px;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero h1 {
+                margin: 0 auto 24px;
+                max-width: 520px;
+            }
+
+            .hero p {
+                margin: 0 auto 48px;
+                max-width: 480px;
+            }
+
+            .hero-mascot {
+                width: 240px;
+            }
+
+            .app-card {
+                grid-template-columns: 1fr;
+            }
+
+            .app-card-content {
+                padding: 36px;
+            }
+
+            .about-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .about-grid > * {
+                grid-column: span 1;
+            }
+
+            .about-card {
+                padding: 24px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-mascot {
+                width: 180px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---- ANIMATIONS ---- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <img src="images/logo.png" alt="Odd Duck Labs" class="logo">
+
+    <!-- Nav -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <img src="images/wordmark.png" alt="Odd Duck Labs" class="nav-logo">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#apps">Apps</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="mailto:team@oddducklabs.com">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="menuBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <h1>Apps that make life a little more <span class="c-yellow">d</span><span class="c-red">e</span><span class="c-blue">l</span><span class="c-green">i</span><span class="c-yellow">g</span><span class="c-red">h</span><span class="c-blue">t</span><span class="c-green">f</span><span class="c-yellow">u</span><span class="c-red">l</span>.</h1>
+                <p>We're a small studio with big ideas, building thoughtful apps for the things that matter in life.</p>
+            </div>
+            <div class="hero-image">
+                <img src="images/OddDuckLabs_Logo_3D_withShadow.jpg" alt="Odd Duck Labs mascot" class="hero-mascot">
+            </div>
+        </div>
+        <a href="#apps" class="hero-cta">
+            See Our Apps
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" /></svg>
+        </a>
+    </section>
+
+    <!-- Apps -->
+    <section id="apps">
+        <div class="section-inner">
+            <span class="section-label">Our Apps</span>
+            <h2 class="section-title">What we're building</h2>
+            <p class="section-subtitle">Thoughtfully crafted apps designed to fit naturally into your life.</p>
+
+            <a href="https://momentosapp.com" target="_blank" rel="noopener" class="app-card fade-in">
+                <div class="app-card-visual">
+                    <img src="images/Momentos_OddDuckLabs_Thumbnail.jpg" alt="Momentos — Moments worth saving">
+                </div>
+                <div class="app-card-content">
+                    <h3>Momentos</h3>
+                    <p>Momentos is your personal life journal — log the jobs, places, concerts, milestones, and experiences that shaped who you are.</p>
+                    <span class="app-link">
+                        Go to momentosapp.com
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                    </span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="section-inner">
+            <span class="section-label">About Us</span>
+            <h2 class="section-title">Why Odd Duck?</h2>
+            <p class="section-subtitle">Because the best ideas come from thinking a little differently.</p>
+
+            <div class="about-grid">
+                <div class="about-card fade-in">
+                    <div class="about-card-icon icon-yellow">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" /></svg>
+                    </div>
+                    <h3>Always improving</h3>
+                    <p>We ship updates often, listen to feedback, and never stop making our apps better.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="about-card-icon icon-yellow">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" /></svg>
+                    </div>
+                    <h3>Thoughtful design</h3>
+                    <p>Every detail is intentional. We craft apps that feel intuitive from the very first tap.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="about-card-icon icon-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
+                    </div>
+                    <h3>Made with care</h3>
+                    <p>We're a small team that sweats the small stuff so you get apps that just work — and that you'll love using.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="about-card-icon icon-blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" /></svg>
+                    </div>
+                    <h3>Privacy first</h3>
+                    <p>Your data is yours. We build with privacy at the core — no tracking, no selling, no surprises.</p>
+                </div>
+                <div class="about-card fade-in">
+                    <div class="about-card-icon icon-green">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>
+                    </div>
+                    <h3>Cross-platform</h3>
+                    <p>Our apps meet you where you are — on the web, iPhone, and Android devices.</p>
+                </div>
+                <a href="mailto:team@oddducklabs.com" class="about-card about-card-cta fade-in">
+                    <div class="about-card-icon icon-yellow">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg>
+                    </div>
+                    <h3>Questions or feedback?</h3>
+                    <p>We would love to hear from you!</p>
+                    <span class="about-card-link">
+                        Get in touch
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" /></svg>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <p class="footer-text">&copy; <span id="footerYear"></span> Odd Duck Labs. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="mailto:team@oddducklabs.com">Contact</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll shadow
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 200);
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const navLinks = document.getElementById('navLinks');
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // Close mobile menu when a link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // Scroll-triggered fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Dynamic footer year
+        document.getElementById('footerYear').textContent = new Date().getFullYear();
+    </script>
+
 </body>
 </html>
